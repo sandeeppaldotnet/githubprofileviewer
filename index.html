@@ -31,29 +31,6 @@
       animation: fadeIn 1s ease-out;
     }
 
-    /* Slide-up animation for default users */
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .default-user-card {
-      animation: slideUp 0.5s ease-out;
-      animation-fill-mode: both;
-    }
-
-    /* Delay animations for each card */
-    .default-user-card:nth-child(1) { animation-delay: 0.2s; }
-    .default-user-card:nth-child(2) { animation-delay: 0.4s; }
-    .default-user-card:nth-child(3) { animation-delay: 0.6s; }
-    .default-user-card:nth-child(4) { animation-delay: 0.8s; }
-    .default-user-card:nth-child(5) { animation-delay: 1s; }
-    .default-user-card:nth-child(6) { animation-delay: 1.2s; }
-    .default-user-card:nth-child(7) { animation-delay: 1.4s; }
-    .default-user-card:nth-child(8) { animation-delay: 1.6s; }
-    .default-user-card:nth-child(9) { animation-delay: 1.8s; }
-    .default-user-card:nth-child(10) { animation-delay: 2s; }
-
     /* Card hover effects */
     .profile-card, .repo-card {
       background-color: #fff;
@@ -151,12 +128,6 @@
       </div>
     </div>
 
-    <!-- Default Top-Starred Users -->
-    <div id="defaultUsers" class="row justify-content-center">
-      <h3 class="text-center mb-4">Top Starred Users</h3>
-      <div id="defaultUserList" class="row"></div>
-    </div>
-
     <!-- Profile Section -->
     <div id="profile" class="text-center d-none" data-aos="fade-up">
       <div class="profile-card p-4">
@@ -188,43 +159,10 @@
     AOS.init();
 
     // GitHub Personal Access Token
-    const GITHUB_TOKEN = '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'; // Replace with your token
+    const GITHUB_TOKEN = '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'; // Replace with your token
 
-    // Default list of top-starred users
-    const defaultUsers = ['torvalds', 'google', 'facebook', 'microsoft', 'github', 'apple', 'vuejs', 'angular', 'reactjs', 'nodejs'];
-
-    // Fetch and display default users
-    async function fetchDefaultUsers() {
-      const defaultUserList = document.getElementById('defaultUserList');
-      defaultUserList.innerHTML = '';
-
-      for (const username of defaultUsers) {
-        const response = await fetch(`https://api.github.com/users/${username}`, {
-          headers: {
-            Authorization: `token ${GITHUB_TOKEN}`,
-          },
-        });
-        const data = await response.json();
-
-        if (response.ok) {
-          const userCard = `
-            <div class="col-md-4 mb-4 default-user-card">
-              <div class="profile-card p-3 text-center">
-                <img src="${data.avatar_url}" alt="${data.login}" class="rounded-circle mb-3" width="100">
-                <h4><a href="${data.html_url}" target="_blank">${data.login}</a></h4>
-                <p class="text-muted">${data.name || 'No name available'}</p>
-                <div class="user-stats">
-                  <p><i class="fas fa-users"></i><strong>Followers</strong><br>${data.followers}</p>
-                  <p><i class="fas fa-user-friends"></i><strong>Following</strong><br>${data.following}</p>
-                  <p><i class="fas fa-code-branch"></i><strong>Repos</strong><br>${data.public_repos}</p>
-                </div>
-              </div>
-            </div>
-          `;
-          defaultUserList.innerHTML += userCard;
-        }
-      }
-    }
+    // Default searchable user
+    const DEFAULT_USER = 'sandeeppaldotnet';
 
     // Fetch user profile
     async function fetchUserProfile(username) {
@@ -292,8 +230,9 @@
       }
     });
 
-    // Load default users on page load
-    fetchDefaultUsers();
+    // Load default user on page load
+    fetchUserProfile(DEFAULT_USER);
+    fetchUserRepos(DEFAULT_USER);
   </script>
 </body>
 </html>
